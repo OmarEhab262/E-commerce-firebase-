@@ -1,4 +1,5 @@
-// productData
+import { useNavigate } from "react-router";
+
 const productData = [
   {
     id: 1,
@@ -83,6 +84,7 @@ const productData = [
 ];
 
 const HomePageProductCard = () => {
+  const navigate = useNavigate();
   return (
     <div className="mt-10">
       {/* Heading  */}
@@ -102,6 +104,7 @@ const HomePageProductCard = () => {
                 <div key={index} className="">
                   <div className="h-full border border-gray-300 rounded-xl overflow-hidden shadow-md ">
                     <img
+                      onClick={() => navigate("/productinfo")}
                       className="lg:h-80  h-96 w-full cursor-pointer"
                       src={image}
                       alt="blog"

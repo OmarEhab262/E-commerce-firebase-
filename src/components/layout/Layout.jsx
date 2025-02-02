@@ -1,6 +1,6 @@
-import PropTypes from "prop-types";
-import NavBar from "../navbar/NavBar";
 import Footer from "../footer/Footer";
+import NavBar from "../navbar/NavBar";
+// eslint-disable-next-line react/prop-types
 const Layout = ({ children }) => {
   return (
     <>
@@ -9,9 +9,6 @@ const Layout = ({ children }) => {
       <Footer />
     </>
   );
-};
-Layout.propTypes = {
-  children: PropTypes.object,
 };
 
 export default Layout;
