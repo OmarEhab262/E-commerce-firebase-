@@ -9,7 +9,8 @@ const NavBar = () => {
     { name: "Home", path: "/" },
     { name: "All Products", path: "/allproducts" },
     { name: "SignUp", path: "/signup" },
-    { name: "Omar", path: "/omar" },
+    { name: "Omar", path: "/user-dashboard" },
+    { name: "Admin", path: "/admin-dashboard" },
     { name: "Cart", path: "/cart" },
   ];
 
@@ -32,7 +33,7 @@ const NavBar = () => {
           <ul className="navbar md:flex hidden justify-around">
             {listNavBar.map((item) => (
               <li
-                className="duration-200 ease-in hover:bg-[#241154] w-fit py-1 px-3 rounded-[10px] cursor-pointer"
+                className="duration-200 ease-in  w-fit py-1 px-3 rounded-[10px] cursor-pointer"
                 key={item.name}
               >
                 <Link to={item.path}>{item.name}</Link>
