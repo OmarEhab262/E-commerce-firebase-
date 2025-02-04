@@ -1,16 +1,24 @@
 import { Menu } from "lucide-react";
 import { useState } from "react";
 import SearchBar from "../searchBar/SearchBar";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const NavBar = () => {
+  const user = JSON.parse(localStorage.getItem("users"));
+
+  // navigate
+  const navigate = useNavigate();
+
+  // logout function
+  const logout = () => {
+    localStorage.clear("users");
+    navigate("/login");
+  };
+
   const [isOpen, setIsOpen] = useState(false);
   const listNavBar = [
     { name: "Home", path: "/" },
     { name: "All Products", path: "/allproducts" },
-    { name: "SignUp", path: "/signup" },
-    { name: "Omar", path: "/user-dashboard" },
-    { name: "Admin", path: "/admin-dashboard" },
     { name: "Cart", path: "/cart" },
   ];
 
@@ -30,15 +38,45 @@ const NavBar = () => {
           >
             <Menu />
           </button>
-          <ul className="navbar md:flex hidden justify-around">
+          <ul className="navbar md:flex hidden justify-around items-center">
             {listNavBar.map((item) => (
               <li
-                className="duration-200 ease-in  w-fit py-1 px-3 rounded-[10px] cursor-pointer"
+                className="duration-200 ease-in w-fit py-1 px-3 rounded-[10px] cursor-pointer"
                 key={item.name}
               >
                 <Link to={item.path}>{item.name}</Link>
               </li>
             ))}
+            {/* Signup */}
+            {!user && (
+              <li>
+                <Link to={"/signup"}>Signup</Link>
+              </li>
+            )}
+            {/* Login */}
+            {!user && (
+              <li>
+                <Link to={"/login"}>Login</Link>
+              </li>
+            )}
+            {/* User Dashboard */}
+            {user?.role === "user" && (
+              <li>
+                <Link to={"/user-dashboard"}>{user?.name}</Link>
+              </li>
+            )}
+            {/* Admin Dashboard */}
+            {user?.role === "admin" && (
+              <li>
+                <Link to={"/admin-dashboard"}>Admin</Link>
+              </li>
+            )}
+            {/* Logout */}
+            {user && (
+              <li className="cursor-pointer" onClick={logout}>
+                Logout
+              </li>
+            )}
           </ul>
         </div>
         <div className="lg:w-1/4 lg:flex hidden">
@@ -56,13 +94,59 @@ const NavBar = () => {
       >
         <ul className="navbar py-3 flex flex-col">
           {listNavBar.map((item) => (
-            <li
+            <Link
               className="duration-200 ease-in hover:bg-[#241154] hover:text-gray-400 w-[90%] p-3 rounded-[10px] cursor-pointer ml-2"
               key={item.name}
+              to={item.path}
             >
-              <Link to={item.path}>{item.name}</Link>
-            </li>
+              {item.name}
+            </Link>
           ))}
+          {/* Signup */}
+          {!user && (
+            <Link
+              className="duration-200 ease-in hover:bg-[#241154] hover:text-gray-400 w-[90%] p-3 rounded-[10px] cursor-pointer ml-2"
+              to={"/signup"}
+            >
+              Signup
+            </Link>
+          )}
+          {/* Login */}
+          {!user && (
+            <Link
+              className="duration-200 ease-in hover:bg-[#241154] hover:text-gray-400 w-[90%] p-3 rounded-[10px] cursor-pointer ml-2"
+              to={"/login"}
+            >
+              Login
+            </Link>
+          )}
+          {/* User Dashboard */}
+          {user?.role === "user" && (
+            <Link
+              className="duration-200 ease-in hover:bg-[#241154] hover:text-gray-400 w-[90%] p-3 rounded-[10px] cursor-pointer ml-2"
+              to={"/user-dashboard"}
+            >
+              Profile
+            </Link>
+          )}
+          {/* Admin Dashboard */}
+          {user?.role === "admin" && (
+            <Link
+              className="duration-200 ease-in hover:bg-[#241154] hover:text-gray-400 w-[90%] p-3 rounded-[10px] cursor-pointer ml-2"
+              to={"/admin-dashboard"}
+            >
+              Admin
+            </Link>
+          )}
+          {/* Logout */}
+          {user && (
+            <li
+              className="duration-200 ease-in hover:bg-[#241154] hover:text-gray-400 w-[90%] p-3 rounded-[10px] cursor-pointer ml-2"
+              onClick={logout}
+            >
+              Logout
+            </li>
+          )}
         </ul>
       </div>
     </nav>

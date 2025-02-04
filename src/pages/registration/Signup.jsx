@@ -6,15 +6,21 @@ import { auth, fireDB } from "../../firebase/FirebaseConfig";
 import { Timestamp, addDoc, collection } from "firebase/firestore";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import Loader from "../../components/loader/Loader";
+import { Eye, EyeClosed } from "lucide-react";
 const Signup = () => {
-  const { loading, setLoading } = useContext(myContext);
   const navigate = useNavigate();
+  const { loading, setLoading } = useContext(myContext);
+  const [openPass, setOpenPass] = useState(false);
+  const changepassword = () => {
+    setOpenPass(!openPass);
+  };
   const [userSignup, setUserSignup] = useState({
     name: "",
     email: "",
     password: "",
     role: "user",
   });
+  //admin@gmail.com
 
   const userSignupFunction = async () => {
     if (
@@ -71,7 +77,7 @@ const Signup = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <div className="login_Form bg-[#f5f3fa] px-1  py-6 border border-[#e2dff0] rounded-xl shadow-md lg:w-1/3 md:w-1/2 w-full p-5">
+      <div className="login_Form bg-[#f5f3fa] px-1  py-6 border border-[#e2dff0] rounded-xl shadow-md lg:w-1/3 md:w-1/2 w-full p-5 m-7">
         <div className="mb-5">
           <h2 className="text-center text-2xl font-bold text-[#160a36] mb-9 mt-4">
             Signup
@@ -101,16 +107,23 @@ const Signup = () => {
               className="bg-[#f5f3fa] w-full border border-[#d3cce6] px-2 py-2 rounded-md outline-none placeholder-[#1909428a]"
             />
           </div>
-          <div className="mb-5">
+          <div className="mb-5 relative">
             <input
               value={userSignup.password}
               onChange={(e) =>
                 setUserSignup({ ...userSignup, password: e.target.value })
               }
-              type="password"
+              type={openPass ? "text" : "password"}
               placeholder="Password"
               className="bg-[#f5f3fa] w-full border border-[#d3cce6] px-2 py-2 rounded-md outline-none placeholder-[#1909428a]"
             />
+            <span
+              onClick={changepassword}
+              className="absolute right-3 top-3 cursor-pointer"
+            >
+              {openPass ? <EyeClosed size={20} /> : <Eye size={20} />}
+              {/* استخدام EyeOff بدلاً من EyeClosed */}
+            </span>
           </div>
           <div className="mb-5">
             <button
@@ -127,7 +140,10 @@ const Signup = () => {
         <div className="ml-4">
           <h2 className="text-[#160a36]">
             Have an account{" "}
-            <Link className="text-[#160a36] font-bold" to={"/login"}>
+            <Link
+              className="text-[#160a36] font-bold cursor-pointer"
+              to={"/login"}
+            >
               Login
             </Link>
           </h2>
