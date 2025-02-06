@@ -14,15 +14,20 @@ const products = [
 ];
 
 const UserDashboard = () => {
+  const user = JSON.parse(localStorage.getItem("users"));
   return (
     <Layout>
       <div className=" container mx-auto px-4 py-5 lg:py-8">
         {/* Top  */}
-        <div className="top ">
+        <div className="mx-auto my-4 max-w-6xl px-2 md:my-6 md:px-0">
+          <h2 className=" text-2xl lg:text-3xl font-bold">User Information</h2>
+        </div>
+
+        <div className="top w-fit mx-auto p-5 ">
           {/* main  */}
-          <div className=" bg-blue-50 py-5 rounded-xl border border-blue-100">
+          <div className=" bg-blue-50 py-5 rounded-xl border border-blue-100 ">
             {/* image  */}
-            <div className="flex justify-center">
+            <div className="flex justify-center mb-5">
               <img
                 src="https://cdn-icons-png.flaticon.com/128/2202/2202112.png"
                 alt=""
@@ -30,11 +35,17 @@ const UserDashboard = () => {
             </div>
             {/* text  */}
             <div className="">
-              <h1 className=" text-center text-lg">
-                <span className=" font-bold">Name :</span> Omar Ehab Mahmoud
+              <h1 className=" px-5 text-lg">
+                <span className=" font-bold">Name :</span> {user?.name}
               </h1>
-              <h1 className=" text-center text-lg">
-                <span className=" font-bold">Email :</span> test@gmail.com
+              <h1 className=" px-5 text-lg">
+                <span className=" font-bold">Email :</span> {user?.email}
+              </h1>
+              <h1 className=" px-5 text-lg">
+                <span className=" font-bold">Date :</span> {user?.date}
+              </h1>
+              <h1 className=" px-5 text-lg">
+                <span className=" font-bold">Role :</span> {user?.role}
               </h1>
             </div>
           </div>

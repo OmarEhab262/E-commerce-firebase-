@@ -3,10 +3,12 @@ import ProductDetail from "../../components/admin/ProductDetail";
 import OrderDetail from "../../components/admin/OrderDetail";
 import UserDetail from "../../components/admin/UserDetail";
 import { ListOrdered, ShoppingBasket, Users } from "lucide-react";
+import Layout from "../../components/layout/Layout";
 
 const AdminDashboard = () => {
+  const user = JSON.parse(localStorage.getItem("users"));
   return (
-    <div>
+    <Layout>
       {/* Top */}
       <div className="top mb-5 px-5 mt-5">
         <div className=" bg-blue-50 py-5 border border-blue-100 rounded-lg">
@@ -16,13 +18,13 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      <div className="px-5">
+      <div className="px-5 mb-5">
         {/* Mid  */}
-        <div className="mid mb-5">
+        <div className="top w-fit mx-auto p-5 mb-5 ">
           {/* main  */}
-          <div className=" bg-blue-50 py-5 rounded-xl border border-blue-100">
+          <div className=" bg-blue-50 py-5 rounded-xl border border-blue-100 ">
             {/* image  */}
-            <div className="flex justify-center">
+            <div className="flex justify-center mb-5">
               <img
                 src="https://cdn-icons-png.flaticon.com/128/2202/2202112.png"
                 alt=""
@@ -30,11 +32,17 @@ const AdminDashboard = () => {
             </div>
             {/* text  */}
             <div className="">
-              <h1 className=" text-center text-lg text-[#160a36]">
-                <span className=" font-bold">Name :</span> Kamal Nayan Upadhyay
+              <h1 className=" px-5 text-lg">
+                <span className=" font-bold">Name :</span> {user?.name}
               </h1>
-              <h1 className=" text-center text-lg text-[#160a36]">
-                <span className=" font-bold">Email :</span> test@gmail.com
+              <h1 className=" px-5 text-lg">
+                <span className=" font-bold">Email :</span> {user?.email}
+              </h1>
+              <h1 className=" px-5 text-lg">
+                <span className=" font-bold">Date :</span> {user?.date}
+              </h1>
+              <h1 className=" px-5 text-lg">
+                <span className=" font-bold">Role :</span> {user?.role}
               </h1>
             </div>
           </div>
@@ -98,7 +106,7 @@ const AdminDashboard = () => {
           </Tabs>
         </div>
       </div>
-    </div>
+    </Layout>
   );
 };
 

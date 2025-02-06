@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import myContext from "../../context/myContext";
 import toast from "react-hot-toast";
@@ -74,7 +74,9 @@ const Signup = () => {
       setLoading(false);
     }
   };
-
+  useEffect(() => {
+    localStorage.removeItem("users");
+  }, []);
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="login_Form bg-[#f5f3fa] px-1  py-6 border border-[#e2dff0] rounded-xl shadow-md lg:w-1/3 md:w-1/2 w-full p-5 m-7">
