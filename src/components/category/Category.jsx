@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router";
+
 // category
 const category = [
   {
@@ -35,6 +37,7 @@ const category = [
 ];
 
 const Category = () => {
+  const navigate = useNavigate();
   return (
     <div className="">
       <div className="flex flex-col mt-5 ">
@@ -43,7 +46,10 @@ const Category = () => {
             {category.map((item, index) => {
               return (
                 <div key={index} className="px-3 lg:px-10">
-                  <div className=" w-16 h-16 lg:w-24 lg:h-24 max-w-xs rounded-full  bg-pink-500 transition-all hover:bg-pink-400 cursor-pointer mb-1 ">
+                  <div
+                    onClick={() => navigate(`/category/${item.name}`)}
+                    className=" w-16 h-16 lg:w-24 lg:h-24 max-w-xs rounded-full  bg-pink-500 transition-all hover:bg-pink-400 cursor-pointer mb-1 "
+                  >
                     <div className="flex justify-center mb-12">
                       <img src={item.image} alt="img" />
                     </div>

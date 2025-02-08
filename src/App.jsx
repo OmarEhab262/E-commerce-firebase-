@@ -13,6 +13,7 @@ import UserDashboard from "./pages/user/UserDashboard";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AddProductPage from "./components/admin/AddProductPage";
 import UpdateProductPage from "./pages/admin/UpdateProductPage";
+import CategoryPage from "./pages/category/CategoryPage";
 import MyState from "./context/myState";
 import { ProtectedRouteForUser } from "./protectedRoute/ProtectedRouteForUser";
 import { ProtectedRouteForAdmin } from "./protectedRoute/ProtectedRouteForAdmin";
@@ -25,11 +26,12 @@ function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="*" element={<NoPage />} />{" "}
-          <Route path="/productinfo" element={<ProductInfo />} />
+          <Route path="/productinfo/:id" element={<ProductInfo />} />
           <Route path="/cart" element={<CartPage />} />
           <Route path="/allproducts" element={<AllProduct />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/category/:categoryname" element={<CategoryPage />} />
           <Route
             path="/user-dashboard"
             element={
