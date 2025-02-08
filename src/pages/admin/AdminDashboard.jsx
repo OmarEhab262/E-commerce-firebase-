@@ -4,9 +4,13 @@ import OrderDetail from "../../components/admin/OrderDetail";
 import UserDetail from "../../components/admin/UserDetail";
 import { ListOrdered, ShoppingBasket, Users } from "lucide-react";
 import Layout from "../../components/layout/Layout";
+import { useContext } from "react";
+import myContext from "../../context/myContext";
 
 const AdminDashboard = () => {
   const user = JSON.parse(localStorage.getItem("users"));
+  const context = useContext(myContext);
+  const { getAllProduct } = context;
   return (
     <Layout>
       {/* Top */}
@@ -59,7 +63,7 @@ const AdminDashboard = () => {
                     <ShoppingBasket size={50} />
                   </div>
                   <h2 className="title-font font-medium text-3xl text-blue-400 fonts1 mb-4">
-                    10
+                    {getAllProduct.length}
                   </h2>
                   <p className=" text-[#160a36]  font-bold">Total Products</p>
                 </div>

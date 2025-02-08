@@ -1,4 +1,4 @@
-import { ArrowLeft, Loader } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import Layout from "../layout/Layout";
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
@@ -6,6 +6,7 @@ import myContext from "../../context/myContext";
 import { addDoc, collection, Timestamp } from "firebase/firestore";
 import toast from "react-hot-toast";
 import { fireDB } from "../../firebase/FirebaseConfig";
+import Loader from "../loader/Loader";
 
 const categoryList = [
   {
