@@ -1,14 +1,35 @@
 import { useNavigate } from "react-router";
 import Layout from "../../components/layout/Layout";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import myContext from "../../context/myContext";
 import Loader from "../../components/loader/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, deleteFromCart } from "../../redux/cartSlice";
+import toast from "react-hot-toast";
 
 const AllProduct = () => {
   const navigate = useNavigate();
   const context = useContext(myContext);
   const { getAllProduct, loading } = context;
+  const cartItems = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
 
+  const addCart = (item) => {
+    // console.log(item)
+    dispatch(addToCart(item));
+    toast.success("Add to cart");
+  };
+
+  const deleteCart = (item) => {
+    dispatch(deleteFromCart(item));
+    toast.success("Delete cart");
+  };
+
+  // console.log(cartItems)
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+  }, [cartItems]);
   return (
     <Layout>
       <div className="py-8">
@@ -52,9 +73,21 @@ const AllProduct = () => {
                         </h1>
 
                         <div className="flex justify-center ">
-                          <button className=" bg-blue-950 hover:bg-blue-900 w-full text-white py-[4px] rounded-lg font-bold cursor-pointer">
-                            Add To Cart
-                          </button>
+                          {cartItems?.some((p) => p.id === item.id) ? (
+                            <button
+                              onClick={() => deleteCart(item)}
+                              className=" bg-red-700 hover:bg-red-600 w-full text-white py-[4px] rounded-lg font-bold cursor-pointer"
+                            >
+                              Delete from Cart
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => addCart(item)}
+                              className=" bg-blue-950 hover:bg-blue-900 w-full text-white py-[4px] rounded-lg font-bold cursor-pointer"
+                            >
+                              Add To Cart
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>

@@ -2,9 +2,13 @@ import { Menu } from "lucide-react";
 import { useState } from "react";
 import SearchBar from "../searchBar/SearchBar";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const NavBar = () => {
   const user = JSON.parse(localStorage.getItem("users"));
+
+  // CartItems
+  const cartItems = useSelector((state) => state.cart);
 
   // navigate
   const navigate = useNavigate();
@@ -19,7 +23,7 @@ const NavBar = () => {
   const listNavBar = [
     { name: "Home", path: "/" },
     { name: "All Products", path: "/allproducts" },
-    { name: "Cart", path: "/cart" },
+    { name: `Cart (${cartItems.length})`, path: "/cart" },
   ];
 
   return (

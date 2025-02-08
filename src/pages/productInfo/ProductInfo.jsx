@@ -6,6 +6,9 @@ import { useParams } from "react-router-dom";
 import { doc, getDoc } from "firebase/firestore";
 import { fireDB } from "../../firebase/FirebaseConfig";
 import Loader from "../../components/loader/Loader";
+import { useDispatch, useSelector } from "react-redux";
+import { addToCart, deleteFromCart } from "../../redux/cartSlice";
+import toast from "react-hot-toast";
 const ProductInfo = () => {
   const context = useContext(myContext);
   const { loading, setLoading } = context;
@@ -18,13 +21,34 @@ const ProductInfo = () => {
     setLoading(true);
     try {
       const productTemp = await getDoc(doc(fireDB, "products", id));
-      setProduct(productTemp.data());
+      // console.log({...productTemp.data(), id : productTemp.id})
+      setProduct({ ...productTemp.data(), id: productTemp.id });
       setLoading(false);
     } catch (error) {
       console.log(error);
       setLoading(false);
     }
   };
+
+  const cartItems = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  const addCart = (item) => {
+    // console.log(item)
+    dispatch(addToCart(item));
+    toast.success("Add to cart");
+  };
+
+  const deleteCart = (item) => {
+    dispatch(deleteFromCart(item));
+    toast.success("Delete cart");
+  };
+
+  // console.log(cartItems)
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   useEffect(() => {
     getProductData();
@@ -88,9 +112,21 @@ const ProductInfo = () => {
 
                 <div className="mb-6 " />
                 <div className="flex flex-wrap items-center mb-6">
-                  <button className="w-full px-4 py-3 text-center hover:opacity-80 border border-gray-600  bg-[#160a36]  transition duration-300 ease-in-out   cursor-pointer text-gray-100 rounded-xl">
-                    Add to cart
-                  </button>
+                  {cartItems.some((p) => p.id === product.id) ? (
+                    <button
+                      onClick={() => deleteCart(product)}
+                      className="w-full px-4 py-3 text-center hover:opacity-80 border   bg-red-600  transition duration-300 ease-in-out   cursor-pointer text-gray-100 rounded-xl"
+                    >
+                      Remove from cart
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => addCart(product)}
+                      className="w-full px-4 py-3 text-center hover:opacity-80 border border-gray-600  bg-[#160a36] transition duration-300 ease-in-out   cursor-pointer text-gray-100 rounded-xl"
+                    >
+                      Add to cart
+                    </button>
+                  )}
                 </div>
               </div>
             </div>
