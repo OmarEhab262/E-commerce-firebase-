@@ -33,7 +33,7 @@ This project is a **React-based E-commerce platform** built with **Vite** and **
 
 1. Clone the repo:
    ```sh
-   git clone https://github.com/your-repo.git
+   git clone https://github.com/OmarEhab262/E-commerce-firebase-.git
    cd your-project
    ```
 2. Install dependencies:
