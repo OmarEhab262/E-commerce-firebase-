@@ -151,6 +151,11 @@ const NavBar = () => {
               Logout
             </li>
           )}
+          <li>
+            <div className="w-[90%] p-3">
+              <SearchBar />
+            </div>
+          </li>
         </ul>
       </div>
     </nav>

@@ -1,15 +1,20 @@
+import { Trash } from "lucide-react";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { Timestamp, addDoc, collection } from "firebase/firestore";
+import { fireDB } from "../../firebase/FirebaseConfig";
 import { useDispatch, useSelector } from "react-redux";
 import Layout from "../../components/layout/Layout";
-import { Trash } from "lucide-react";
 import {
   decrementQuantity,
   deleteFromCart,
   incrementQuantity,
 } from "../../redux/cartSlice";
-import toast from "react-hot-toast";
-import { useEffect } from "react";
+import BuyNowModal from "../../components/buyNowModal/BuyNowModal";
+import { Navigate } from "react-router-dom";
 
 const CartPage = () => {
+  const [openModal, setOpenModal] = useState(false);
   const cartItems = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
@@ -39,6 +44,69 @@ const CartPage = () => {
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cartItems));
   }, [cartItems]);
+
+  // user
+  const user = JSON.parse(localStorage.getItem("users"));
+
+  // Buy Now Function
+  const [addressInfo, setAddressInfo] = useState({
+    name: "",
+    address: "",
+    pincode: "",
+    mobileNumber: "",
+    time: Timestamp.now(),
+    date: new Date().toLocaleString("en-US", {
+      month: "short",
+      day: "2-digit",
+      year: "numeric",
+    }),
+  });
+
+  const buyNowFunction = () => {
+    // validation
+    if (
+      addressInfo.name === "" ||
+      addressInfo.address === "" ||
+      addressInfo.pincode === "" ||
+      addressInfo.mobileNumber === ""
+    ) {
+      return toast.error("All Fields are required");
+    }
+
+    // Order Info
+    const orderInfo = {
+      cartItems,
+      addressInfo,
+      email: user.email,
+      userid: user.uid,
+      status: "confirmed",
+      time: Timestamp.now(),
+      date: new Date().toLocaleString("en-US", {
+        month: "short",
+        day: "2-digit",
+        year: "numeric",
+      }),
+    };
+    try {
+      const orderRef = collection(fireDB, "order");
+      addDoc(orderRef, orderInfo);
+      setAddressInfo({
+        name: "",
+        address: "",
+        pincode: "",
+        mobileNumber: "",
+      });
+      toast.success("Order Placed Successfull");
+      setOpenModal(false);
+      localStorage.removeItem("cart");
+      location.reload();
+    } catch (error) {
+      console.log(error);
+      localStorage.removeItem("cart");
+      location.reload();
+    }
+  };
+
   return (
     <Layout>
       <div className="container mx-auto px-4 max-w-7xl lg:px-0">
@@ -46,7 +114,7 @@ const CartPage = () => {
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Shopping Cart
           </h1>
-          <form className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+          <div className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
             <section
               aria-labelledby="cart-heading"
               className="rounded-lg bg-white lg:col-span-8"
@@ -192,15 +260,30 @@ const CartPage = () => {
                   </dl>
                   <div className="px-2 pb-4 font-medium text-green-700">
                     <div className="flex gap-4 mb-6">
-                      <button className="w-full px-4 py-3 text-center text-gray-600 bg-blue-100 border border-gray-600  hover:bg-[#160a36]  transition duration-300 ease-in-out   cursor-pointer hover:text-gray-100 rounded-xl">
+                      <button
+                        onClick={() => setOpenModal(true)}
+                        className="w-full px-4 py-3 text-center border border-gray-600 bg-[#160a36] hover:opacity-90 transition duration-300 ease-in-out cursor-pointer hover text-gray-100 rounded-xl"
+                      >
                         Buy now
                       </button>
+
+                      {user ? (
+                        <BuyNowModal
+                          addressInfo={addressInfo}
+                          setAddressInfo={setAddressInfo}
+                          buyNowFunction={buyNowFunction}
+                          openModal={openModal}
+                          setOpenModal={setOpenModal}
+                        />
+                      ) : (
+                        <Navigate to={"/login"} />
+                      )}
                     </div>
                   </div>
                 </div>
               </section>
             )}
-          </form>
+          </div>
         </div>
       </div>
     </Layout>

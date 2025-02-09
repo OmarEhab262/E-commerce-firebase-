@@ -1,96 +1,76 @@
-import { Ban, Search } from "lucide-react";
-import { useState } from "react";
-
-const products = [
-  {
-    name: "Fashion",
-    image:
-      "https://i.pinimg.com/564x/3e/05/ce/3e05cefbc7eec79ac175ea8490a67939.jpg",
-  },
-  {
-    name: "Shirt",
-    image:
-      "https://i.pinimg.com/736x/e4/61/f2/e461f2246b6ad93e2099d98780626396.jpg",
-  },
-  {
-    name: "Jacket",
-    image:
-      "https://i.pinimg.com/564x/fd/50/68/fd50688767adb47aba7204f034554cbd.jpg",
-  },
-  {
-    name: "Mobile",
-    image:
-      "https://i.pinimg.com/564x/22/80/8d/22808d88ada424962f2e064f3075b2d1.jpg",
-  },
-  {
-    name: "Laptop",
-    image:
-      "https://i.pinimg.com/564x/3e/05/ce/3e05cefbc7eec79ac175ea8490a67939.jpg",
-  },
-  {
-    name: "Home",
-    image:
-      "https://i.pinimg.com/736x/e4/61/f2/e461f2246b6ad93e2099d98780626396.jpg",
-  },
-  {
-    name: "book",
-    image:
-      "https://i.pinimg.com/564x/fd/50/68/fd50688767adb47aba7204f034554cbd.jpg",
-  },
-];
+import { Search, X } from "lucide-react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
+import myContext from "../../context/myContext";
 
 const SearchBar = () => {
-  const [searchText, setSearchText] = useState("");
-  const filteredProducts = searchText
-    ? products.filter((product) =>
-        product.name.toLowerCase().startsWith(searchText.toLowerCase())
-      )
-    : [];
+  const context = useContext(myContext);
+  const { getAllProduct } = context || { getAllProduct: [] }; // تجنب الأخطاء عند عدم توفر البيانات
 
-  if (searchText && filteredProducts.length === 0) {
-    filteredProducts.push({ name: "no product found" });
-  }
+  // Search State
+  const [search, setSearch] = useState("");
+
+  // Filter Search Data
+  const filterSearchData = getAllProduct
+    ?.filter((obj) => obj.title.toLowerCase().includes(search.toLowerCase()))
+    .slice(0, 8);
+
+  const navigate = useNavigate();
 
   return (
     <div className="relative w-full">
       <input
         className={`p-2 rounded-md border border-gray-300 w-full ${
-          searchText ? "pl-2" : "pl-8"
-        } `}
+          search ? "pl-2" : "pl-8"
+        }`}
         type="text"
-        value={searchText}
-        onChange={(e) => setSearchText(e.target.value)}
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
         placeholder="Search"
       />
       <div
         className={`${
-          searchText ? "hidden" : "absolute"
-        } cursor-pointer left-0 top-1 p-1  text-gray-400`}
+          search ? "hidden" : "absolute"
+        } cursor-pointer left-0 top-1 p-1 text-gray-400`}
       >
         <Search />
       </div>
-      {filteredProducts.length > 0 && (
-        <ul className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg mt-1">
-          {filteredProducts.map((product, index) => (
-            <li
-              key={index}
-              className="flex items-center p-2 hover:bg-gray-100 text-black cursor-pointer"
-            >
-              {product.image ? (
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  className="w-8 h-8 mr-2"
-                />
-              ) : (
-                <div className="mr-2">
-                  <Ban color="red" />
+      <div
+        onClick={() => setSearch("")}
+        className={`${
+          search ? "absolute" : "hidden"
+        } absolute cursor-pointer right-0 top-1 p-1 text-gray-400`}
+      >
+        {" "}
+        <X />
+      </div>
+      {search && (
+        <div className="absolute top-full left-0 w-full bg-white border border-gray-300 rounded-md shadow-lg mt-1 text-black">
+          {filterSearchData.length > 0 ? (
+            <>
+              {filterSearchData.map((item, index) => (
+                <div
+                  key={index}
+                  className="py-2 px-2 cursor-pointer"
+                  onClick={() => navigate(`/productinfo/${item.id}`)}
+                >
+                  <div className="flex items-center gap-2">
+                    <img className="w-10" src={item.productImageUrl} alt="" />
+                    {item.title}
+                  </div>
                 </div>
-              )}
-              {product.name}
-            </li>
-          ))}
-        </ul>
+              ))}
+            </>
+          ) : (
+            <div className="flex justify-center">
+              <img
+                className="w-20"
+                src="https://cdn-icons-png.flaticon.com/128/10437/10437090.png"
+                alt="img"
+              />
+            </div>
+          )}
+        </div>
       )}
     </div>
   );
