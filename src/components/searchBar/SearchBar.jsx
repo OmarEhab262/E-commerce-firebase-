@@ -12,7 +12,7 @@ const SearchBar = () => {
 
   // Filter Search Data
   const filterSearchData = getAllProduct
-    ?.filter((obj) => obj.title.toLowerCase().includes(search.toLowerCase()))
+    ?.filter((obj) => obj.title.toLowerCase().startsWith(search.toLowerCase()))
     .slice(0, 8);
 
   const navigate = useNavigate();
@@ -52,10 +52,17 @@ const SearchBar = () => {
                 <div
                   key={index}
                   className="py-2 px-2 cursor-pointer"
-                  onClick={() => navigate(`/productinfo/${item.id}`)}
+                  onClick={() => {
+                    navigate(`/productinfo/${item.id}`);
+                    setSearch("");
+                  }}
                 >
                   <div className="flex items-center gap-2">
-                    <img className="w-10" src={item.productImageUrl} alt="" />
+                    <img
+                      className="w-10"
+                      src={item.productImageUrl}
+                      alt={item.title}
+                    />
                     {item.title}
                   </div>
                 </div>

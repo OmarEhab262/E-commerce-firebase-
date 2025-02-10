@@ -13,14 +13,14 @@ const Footer = () => {
               </span>
             </a>
             <p className="text-sm text-gray-100  sm:border-gray-200">
-              © 2024 ebharat —
+              © 2024 Omar Ehab —
               <Link
                 to={"/"}
                 className="text-gray-100 ml-1"
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                @ebharat
+                @OmarEhab
               </Link>
             </p>
           </div>

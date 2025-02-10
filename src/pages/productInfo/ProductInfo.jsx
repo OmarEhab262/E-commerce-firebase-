@@ -10,6 +10,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { addToCart, deleteFromCart } from "../../redux/cartSlice";
 import toast from "react-hot-toast";
 const ProductInfo = () => {
+  const user = JSON.parse(localStorage.getItem("users"));
+
   const context = useContext(myContext);
   const { loading, setLoading } = context;
 
@@ -52,7 +54,7 @@ const ProductInfo = () => {
 
   useEffect(() => {
     getProductData();
-  }, []);
+  }, [id]);
   return (
     <Layout>
       <section className="py-5 lg:py-16 font-poppins ">
@@ -121,10 +123,19 @@ const ProductInfo = () => {
                     </button>
                   ) : (
                     <button
-                      onClick={() => addCart(product)}
-                      className="w-full px-4 py-3 text-center hover:opacity-80 border border-gray-600  bg-[#160a36] transition duration-300 ease-in-out   cursor-pointer text-gray-100 rounded-xl"
+                      onClick={
+                        user?.role === "user"
+                          ? () => addCart(product)
+                          : undefined
+                      }
+                      className={`bg-blue-950 hover:bg-blue-900 w-full text-white  rounded-lg font-bold py-3 ${
+                        user?.role === "user"
+                          ? "cursor-pointer"
+                          : "cursor-not-allowed opacity-50"
+                      }`}
+                      disabled={user?.role !== "user"}
                     >
-                      Add to cart
+                      Add To Cart
                     </button>
                   )}
                 </div>

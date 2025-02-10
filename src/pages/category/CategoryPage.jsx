@@ -10,6 +10,8 @@ import toast from "react-hot-toast";
 const CategoryPage = () => {
   const { categoryname } = useParams();
 
+  const user = JSON.parse(localStorage.getItem("users"));
+
   const context = useContext(myContext);
   const { getAllProduct, loading } = context;
 
@@ -56,7 +58,13 @@ const CategoryPage = () => {
             {/* main 2 */}
             <div className=" px-5 py-5 mx-auto">
               {/* main 3  */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4   justify-items-center ">
+              <div
+                className={`mt-12 ${
+                  filterProduct.length > 0
+                    ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4   justify-items-center"
+                    : ""
+                }`}
+              >
                 {filterProduct.length > 0 ? (
                   <>
                     {filterProduct.map((item, index) => {
@@ -92,8 +100,17 @@ const CategoryPage = () => {
                                   </button>
                                 ) : (
                                   <button
-                                    onClick={() => addCart(item)}
-                                    className=" bg-blue-950 hover:bg-blue-900 w-full text-white py-[4px] rounded-lg font-bold cursor-pointer"
+                                    onClick={
+                                      user?.role === "user"
+                                        ? () => addCart(item)
+                                        : undefined
+                                    }
+                                    className={`bg-blue-950 hover:bg-blue-900 w-full text-white py-[4px] rounded-lg font-bold ${
+                                      user?.role === "user"
+                                        ? "cursor-pointer"
+                                        : "cursor-not-allowed opacity-50"
+                                    }`}
+                                    disabled={user?.role !== "user"}
                                   >
                                     Add To Cart
                                   </button>
@@ -107,16 +124,16 @@ const CategoryPage = () => {
                   </>
                 ) : (
                   <div>
-                    <div className="flex justify-center">
+                    <div className="flex justify-center items-center flex-col gap-10">
                       <img
                         className=" mb-2"
                         src="https://cdn-icons-png.flaticon.com/128/2748/2748614.png"
                         alt=""
                       />
+                      <h1 className=" text-black text-xl">
+                        No {categoryname} product found
+                      </h1>
                     </div>
-                    <h1 className=" text-black text-xl">
-                      No {categoryname} product found
-                    </h1>
                   </div>
                 )}
               </div>

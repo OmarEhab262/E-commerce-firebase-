@@ -23,7 +23,6 @@ const NavBar = () => {
   const listNavBar = [
     { name: "Home", path: "/" },
     { name: "All Products", path: "/allproducts" },
-    { name: `Cart (${cartItems.length})`, path: "/cart" },
   ];
 
   return (
@@ -51,6 +50,11 @@ const NavBar = () => {
                 <Link to={item.path}>{item.name}</Link>
               </li>
             ))}
+            {user?.role === "user" && (
+              <li>
+                <Link to={"/cart"}>Cart ({cartItems.length})</Link>
+              </li>
+            )}
             {/* Signup */}
             {!user && (
               <li>
@@ -66,7 +70,7 @@ const NavBar = () => {
             {/* User Dashboard */}
             {user?.role === "user" && (
               <li>
-                <Link to={"/user-dashboard"}>{user?.name}</Link>
+                <Link to={"/user-dashboard"}>Profile</Link>
               </li>
             )}
             {/* Admin Dashboard */}

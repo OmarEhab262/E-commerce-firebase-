@@ -8,6 +8,7 @@ import toast from "react-hot-toast";
 
 const HomePageProductCard = () => {
   const navigate = useNavigate();
+  const user = JSON.parse(localStorage.getItem("users"));
 
   const context = useContext(myContext);
   const { getAllProduct, loading } = context;
@@ -81,8 +82,17 @@ const HomePageProductCard = () => {
                           </button>
                         ) : (
                           <button
-                            onClick={() => addCart(item)}
-                            className=" bg-blue-950 hover:bg-blue-900 w-full text-white py-[4px] rounded-lg font-bold cursor-pointer"
+                            onClick={
+                              user?.role === "user"
+                                ? () => addCart(item)
+                                : undefined
+                            }
+                            className={`bg-blue-950 hover:bg-blue-900 w-full text-white py-[4px] rounded-lg font-bold ${
+                              user?.role === "user"
+                                ? "cursor-pointer"
+                                : "cursor-not-allowed opacity-50"
+                            }`}
+                            disabled={user?.role !== "user"}
                           >
                             Add To Cart
                           </button>

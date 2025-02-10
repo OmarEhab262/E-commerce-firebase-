@@ -11,7 +11,7 @@ import {
   incrementQuantity,
 } from "../../redux/cartSlice";
 import BuyNowModal from "../../components/buyNowModal/BuyNowModal";
-import { Navigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 
 const CartPage = () => {
   const [openModal, setOpenModal] = useState(false);
@@ -114,7 +114,13 @@ const CartPage = () => {
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Shopping Cart
           </h1>
-          <div className="mt-12 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16">
+          <div
+            className={`mt-12 ${
+              cartItems.length > 0
+                ? "lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12 xl:gap-x-16"
+                : ""
+            }`}
+          >
             <section
               aria-labelledby="cart-heading"
               className="rounded-lg bg-white lg:col-span-8"
@@ -208,12 +214,22 @@ const CartPage = () => {
                     })}
                   </>
                 ) : (
-                  <div>
-                    <div className="text-center py-12">
+                  <div className="">
+                    <div className="text-center flex items-center flex-col w-full">
+                      <img
+                        src="https://cdn-icons-png.flaticon.com/512/2762/2762885.png"
+                        alt=""
+                      />
                       <h2 className="text-sm text-gray-700">
                         Your shopping cart is empty. Add some items to continue
                         shopping.
                       </h2>
+                      <Link
+                        className="text-sm my-3 font-medium text-white px-5 py-3 rounded-2xl bg-[#160a36] hover:opacity-90 cursor-pointer"
+                        to={"/"}
+                      >
+                        Return To Shop
+                      </Link>
                     </div>
                   </div>
                 )}
